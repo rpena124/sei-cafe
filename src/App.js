@@ -1,24 +1,26 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
+  const [state, setState] = useState(null)
+  const fetchState = async () =>{
+    try{
+      const response = await fetch('/api/test')
+      const data = await response.json()
+      setState(data)
+    }catch(error){
+      console.error(error)
+    }
+  }
+
+  useEffect(() => {
+    fetchState()
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    { state && state.eureka ? <>{state.eureka}</> : <>You are still looking don't give up.</> }
+  </div>
   );
 }
 
